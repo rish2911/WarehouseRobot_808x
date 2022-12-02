@@ -37,7 +37,7 @@ ArUco detector package.
 
 ## UML Class Diagram
 
- !["Class Diagram"](UML/revised/UML.jpeg)
+ !["Class Diagram"](UML/Initial/UML.jpeg)
 
 
 

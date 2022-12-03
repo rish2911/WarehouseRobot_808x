@@ -38,7 +38,7 @@
 
 
 
-// Demo test for project 808xfp
-TEST(run, test_case1) {
-  assert(1==1);
-}
+// //Demo test for project 808xfp
+// TEST(function_name, test_case1) {
+//   assert(1==1);
+// }

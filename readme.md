@@ -1,10 +1,8 @@
 # Warehouse_Robots-808XFP
 
-[![Build Status](https://github.com/adithyagaurav/Human_Detection_Tracker/actions/workflows/build_and_coveralls.yml/badge.svg)](https://github.com/adithyagaurav/Human_Detection_Tracker/actions/workflows/build_and_coveralls.yml)
-[![Coverage Status](https://coveralls.io/repos/github/adithyagaurav/Human_Detection_Tracker/badge.svg?branch=master)](https://coveralls.io/github/adithyagaurav/Human_Detection_Tracker?branch=master)
+[![Build Status](https://github.com/rish2911/WarehouseRobot_808x/actions/workflows/build_and_coveralls.yml/badge.svg)](https://github.com/rish2911/WarehouseRobot_808x/actions/workflows/build_and_coveralls.yml)
+[![Coverage Status](https://coveralls.io/repos/github/rish2911/WarehouseRobot_808x/badge.svg?branch=master)](https://coveralls.io/github/rish2911/WarehouseRobot_808x?branch=master)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-
 
 
 
@@ -42,11 +40,11 @@ ArUco detector package.
 
 
 ## Demo Output
-
+Pending!
 #### Image Output
-
+Pending!
 #### Video Output
-
+Pending!
 =======
 ## Sprints and Backlogs
 For this project Agile Iterative Process techniques were followed.
@@ -62,7 +60,7 @@ Product & Interation Backlog : [ProductBCK](https://docs.google.com/spreadsheets
 ## Standard install via command-line
 
 ```
-git clone --recursive https://github.com/adithyagaurav/Human_Detection_Tracker
+git clone --recursive https://github.com/rish2911/WarehouseRobot_808x.git
 cd <path to repository>
 chmod +x requirements.sh
 ./requirements.sh
@@ -71,7 +69,7 @@ cd build
 cmake ..
 make
 Run tests: ./test/cpp-test
-Run program: ./app/shell-app
+Run program: ./src/shell-app
 ```
 
 ## Building for code coverage 

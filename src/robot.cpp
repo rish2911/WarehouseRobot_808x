@@ -12,6 +12,8 @@
  */
 
 #include "../include/robot.hpp"
+#include <unistd.h>
+
 
 std::array<std::array<double, 2>, 5>  acme::Robot::get_goal() {
     ros::NodeHandle robot_nh_;
@@ -81,10 +83,11 @@ if (!m_msg->transforms.empty())
 }
 }
 
-void acme::Robot::listen(tf2_ros::Buffer& tfBuffer) {
+std::vector<double> acme::Robot::listen(tf2_ros::Buffer& tfBuffer) {
   ros::NodeHandle robot_nh_;
   ros::Duration(1.0).sleep();
   geometry_msgs::TransformStamped transformStamped;
+  std::vector<double> pickup_goal;
   try {
     transformStamped = tfBuffer.lookupTransform("map", \
     "marker_frame", ros::Time(0));
@@ -103,10 +106,13 @@ void acme::Robot::listen(tf2_ros::Buffer& tfBuffer) {
       << trans_x << ", "
       << trans_y << ", "
       << trans_z << "]");
+    pickup_goal = {trans_x, trans_y};
+    return {trans_x, trans_y};
   }
   catch (tf2::TransformException& ex) {
     ROS_WARN("%s", ex.what());
     ros::Duration(1.0).sleep();
+    return {};
 }
 }
 
@@ -123,6 +129,7 @@ ros::NodeHandle robot_nh_;
   ros::Publisher robot_velocity_publisher;
   ros::Subscriber fiducial_reader;
   geometry_msgs::Twist msg;
+  std::vector<double> pickup_goal;
 // checking if the robot is explorer or the follower
   if ( robot_name_.compare("explorer") == 0 ) {
     // building a velocity publisher
@@ -166,8 +173,12 @@ i++;
            ros::spinOnce();
           }
         fiducial_reader.shutdown();
+        curr_pos_ = {robot_goal_.target_pose.pose.position.x, 
+                    robot_goal_.target_pose.pose.position.y};
         saw_marker = false;
-        listen(tfBuffer);
+        pickup_goal = listen(tfBuffer);
+        move_to_obj(pickup_goal);
+
       }
        goal_sent = false;
        robot_goal_.target_pose.header.frame_id = "map";
@@ -181,3 +192,22 @@ i++;
     loop_rate.sleep();
   }
   }
+
+void acme::Robot::move_to_obj(std::vector<double> goal) {
+    move_base_msgs::MoveBaseGoal explorer_goal;
+    explorer_goal.target_pose.header.frame_id = "map";
+    explorer_goal.target_pose.header.stamp = ros::Time::now();
+    explorer_goal.target_pose.pose.position.x = curr_pos_[0]+0.7*(goal[0] - curr_pos_[0]);//
+    explorer_goal.target_pose.pose.position.y = curr_pos_[1]+0.7*(goal[1] - curr_pos_[1]);//
+    explorer_goal.target_pose.pose.orientation.w = 1.0;
+    robot_client.sendGoal(explorer_goal);
+    while(robot_client.getState() != actionlib::SimpleClientGoalState::SUCCEEDED){
+        ROS_INFO("ROBOT FOLLOWING GOAL");
+    }
+    int count = 0;
+    while(count<10){
+      ROS_INFO("ROBOT COLLECTING OBJECT");
+      count++;
+      std::sleep(5);
+    }
+}

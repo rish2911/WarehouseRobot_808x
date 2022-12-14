@@ -40,6 +40,7 @@
 #define INCLUDE_ROBOT_HPP_
 #include <array>
 #include <vector>
+#include <string>
 #include <actionlib/client/simple_action_client.h>
 #include <fiducial_msgs/FiducialTransformArray.h>
 #include <geometry_msgs/Twist.h>
@@ -55,20 +56,19 @@
  * @brief
  *
  */
-namespace acme
-{
+namespace acme {
     /**
      * @brief Class to represent a robot in an environment
      *
      */
-    class Robot
-    {
-    public:
+    class Robot {
+     public:
         /**
          * @brief Default Constructor for Robot object
          *
          */
-        Robot() : robot_client_{"/explorer/move_base", true}, robot_name_{"explorer"}
+        Robot() : robot_client_{"/explorer/move_base", true}, \
+        robot_name_{"explorer"}
         {
         }
         /**
@@ -76,8 +76,8 @@ namespace acme
          *
          * @param name: std::string
          */
-        Robot(std::string name) : robot_name_{name}, robot_client_{"/" + name + "/move_base", true}
-        {
+        Robot(std::string name) : robot_name_{name}, \
+        robot_client_{"/" + name + "/move_base", true} {
         }
 
         /**
@@ -103,7 +103,8 @@ namespace acme
          * @brief
          *
          */
-        void acme::Robot::aruco_callback(const fiducial_msgs::FiducialTransformArray::ConstPtr& m_msg);
+        void acme::Robot::aruco_callback(const fiducial_msgs::\
+        FiducialTransformArray::ConstPtr& m_msg);
 
         /**
          * @brief Listens to tf2_ros::Buffer and uses tf transform to get the coordinates of the markers in map frame.
@@ -111,14 +112,12 @@ namespace acme
          * 
          * @param tfBuffer  
          */
-        void listen(tf2_ros::Buffer& tfBuffer);
+        void listen(const tf2_ros::Buffer& tfBuffer);
 
-    private:
-        //
+     private:
         ros::NodeHandle robot_nh_;
-        std::string robot_name_; // robot name
-        //
-        int32_t m_aruco_id{}; // Index for aruco locations
+        std::string robot_name_;  // robot name
+        int32_t m_aruco_id{};  // Index for aruco locations
         std::vector<std::vector<double>> obj_locations_;
         //
         std::vector<double> final_obj_pos_;
@@ -127,10 +126,10 @@ namespace acme
         //
         move_base_msgs::MoveBaseGoal robot_goal_;
         //
-        actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> robot_client_; // move base client
-        //
+        actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> \
+        robot_client_;  // move base client
         geometry_msgs::Twist robot_msgs_;
-        bool saw_marker{false}; // Flag for marker spotting
+        bool saw_marker{false};  // Flag for marker spotting
     };
-}
-#endif // INCLUDE_ROBOT_HPP_
+}  // namespace acme
+#endif  // INCLUDE_ROBOT_HPP_

@@ -62,3 +62,34 @@ std::array<std::array<double, 2>, 5>  acme::Robot::get_goal() {
     aruco_locations_.at(4).at(1) = 2.5;
     return aruco_locations_;
 }
+
+
+
+void acme::Robot::listen(tf2_ros::Buffer& tfBuffer) {
+  ros::NodeHandle robot_nh_;
+  ros::Duration(1.0).sleep();
+  geometry_msgs::TransformStamped transformStamped;
+  try {
+    transformStamped = tfBuffer.lookupTransform("map", \
+    "marker_frame", ros::Time(0));
+    auto trans_x = (transformStamped.transform.translation.x + \
+    m_goal.target_pose.pose.position.x)/2;
+    auto trans_y = (transformStamped.transform.translation.y + \
+    m_goal.target_pose.pose.position.y)/2;
+    auto trans_z = transformStamped.transform.translation.z;
+    ros::Duration(4.0).sleep();
+    marker_loc.at(m_aruco_id).at(0) = trans_x;
+    marker_loc.at(m_aruco_id).at(1) = trans_y;
+    marker_loc.at(4).at(0) = -4;
+    marker_loc.at(4).at(1) =  3.5;
+    ROS_INFO_STREAM("Position of marker with ID " \
+    << m_aruco_id << " in map frame: ["
+      << trans_x << ", "
+      << trans_y << ", "
+      << trans_z << "]");
+  }
+  catch (tf2::TransformException& ex) {
+    ROS_WARN("%s", ex.what());
+    ros::Duration(1.0).sleep();
+}
+}

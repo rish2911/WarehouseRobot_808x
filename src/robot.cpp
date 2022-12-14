@@ -13,31 +13,34 @@
 
 #include "../include/robot.hpp"
 #include <unistd.h>
+#include<vector>
 
 
-std::array<std::array<double, 2>, 5>  acme::Robot::get_goal() {
-    ros::NodeHandle robot_nh_;
-    std::array<XmlRpc::XmlRpcValue, 4> pos_list;
+std::vector<std::vector<double>>  acme::Robot::get_goals() {
+    std::vector<double> pos_list;
+    std::vector<std::vector<double>> aruco_locations_;
     char target_id[] = {'1', '2', '3', '4'};
     std::string aruco_lookup_locations = "/aruco_lookup_locations/target_";
 
     for (int i = 0; i <4; i++) {
-        robot_nh_.getParam(aruco_lookup_locations + target_id[i], pos_list[i]);
+        robot_nh_.getParam(aruco_lookup_locations + target_id[i], pos_list);
+        aruco_locations_.push_back(pos_list);
     }
+    aruco_locations_.push_back({-4.0, 2.5});
 
-    for (int i = 0; i < 4; i++) {
-        ROS_ASSERT(pos_list[i].getType() == XmlRpc::XmlRpcValue::TypeArray);
-    }
-
-    for (int i = 0; i < 4; i ++) {
-        for (int32_t j = 0; j < pos_list[i].size(); ++j) {
-            ROS_ASSERT(pos_list[i][j].getType() == \
-            XmlRpc::XmlRpcValue::TypeDouble);
-            aruco_locations_.at(i).at(j) = static_cast<double>(pos_list[i][j]);
-        }
-    }
-    aruco_locations_.at(4).at(0) = -4;  // home location for explorer
-    aruco_locations_.at(4).at(1) = 2.5;
+    // for (int i = 0; i < 4; i++) {
+    //     ROS_ASSERT(pos_list[i].getType() == XmlRpc::XmlRpcValue::TypeArray);
+    // }
+    // std::vector<std::vector<double>> aruco_locations_;
+    // for (int i = 0; i < 4; i ++) {
+    //     for (int32_t j = 0; j < pos_list[i].size(); ++j) {
+    //         ROS_ASSERT(pos_list[i][j].getType() == \
+    //         XmlRpc::XmlRpcValue::TypeDouble);
+    //         aruco_locations_.at(i).at(j) = static_cast<double>(pos_list[i][j]);
+    //     }
+    // }
+    // aruco_locations_.at(4).at(0) = -4;  // home location for explorer
+    // aruco_locations_.at(4).at(1) = 2.5;
     return aruco_locations_;
 }
 
@@ -83,31 +86,25 @@ if (!m_msg->transforms.empty())
 }
 }
 
-std::vector<double> acme::Robot::listen(tf2_ros::Buffer& tfBuffer) {
-  ros::NodeHandle robot_nh_;
+std::vector<double> acme::Robot::listen(const tf2_ros::Buffer& tfBuffer) {
   ros::Duration(1.0).sleep();
   geometry_msgs::TransformStamped transformStamped;
   std::vector<double> pickup_goal;
   try {
     transformStamped = tfBuffer.lookupTransform("map", \
     "marker_frame", ros::Time(0));
-    auto trans_x = (transformStamped.transform.translation.x + \
-    m_goal.target_pose.pose.position.x)/2;
-    auto trans_y = (transformStamped.transform.translation.y + \
-    m_goal.target_pose.pose.position.y)/2;
+    auto trans_x = transformStamped.transform.translation.x;
+    auto trans_y = transformStamped.transform.translation.y;
     auto trans_z = transformStamped.transform.translation.z;
     ros::Duration(4.0).sleep();
-    marker_loc.at(m_aruco_id).at(0) = trans_x;
-    marker_loc.at(m_aruco_id).at(1) = trans_y;
-    marker_loc.at(4).at(0) = -4;
-    marker_loc.at(4).at(1) =  3.5;
     ROS_INFO_STREAM("Position of marker with ID " \
     << m_aruco_id << " in map frame: ["
       << trans_x << ", "
       << trans_y << ", "
       << trans_z << "]");
-    pickup_goal = {trans_x, trans_y};
-    return {trans_x, trans_y};
+    pickup_goal.push_back(trans_x);
+    pickup_goal.push_back(trans_y);
+    return pickup_goal;
   }
   catch (tf2::TransformException& ex) {
     ROS_WARN("%s", ex.what());
@@ -117,10 +114,9 @@ std::vector<double> acme::Robot::listen(tf2_ros::Buffer& tfBuffer) {
 }
 
 
-void acme::Robot::move_to_goal(std::array<std::array<double, 2>, 5> goal_loc) {
+void acme::Robot::move_to_goal(std::vector<std::vector<double>> goal_loc) {
 typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> \
 MoveBaseClient;
-ros::NodeHandle robot_nh_;
   bool goal_sent = false;
   int i = 0;
   tf2_ros::Buffer tfBuffer;  // Stores known frames
@@ -195,19 +191,21 @@ i++;
 
 void acme::Robot::move_to_obj(std::vector<double> goal) {
     move_base_msgs::MoveBaseGoal explorer_goal;
+    ros::Rate loop_rate(10);
     explorer_goal.target_pose.header.frame_id = "map";
     explorer_goal.target_pose.header.stamp = ros::Time::now();
     explorer_goal.target_pose.pose.position.x = curr_pos_[0]+0.7*(goal[0] - curr_pos_[0]);//
     explorer_goal.target_pose.pose.position.y = curr_pos_[1]+0.7*(goal[1] - curr_pos_[1]);//
     explorer_goal.target_pose.pose.orientation.w = 1.0;
-    robot_client.sendGoal(explorer_goal);
-    while(robot_client.getState() != actionlib::SimpleClientGoalState::SUCCEEDED){
+    robot_client_.sendGoal(explorer_goal);
+    while(robot_client_.getState() != actionlib::SimpleClientGoalState::SUCCEEDED){
         ROS_INFO("ROBOT FOLLOWING GOAL");
     }
     int count = 0;
     while(count<10){
       ROS_INFO("ROBOT COLLECTING OBJECT");
       count++;
-      std::sleep(5);
+      
+      loop_rate.sleep();
     }
 }

@@ -87,7 +87,7 @@ namespace acme {
          *
          * @param goal: std::array<std::array<double, 2>, 5>
          */
-        void move_to_goal(std::array<std::array<double, 2>, 5> goal);
+        void move_to_goal(std::vector<std::vector<double>> goal_loc);
         /**
          * @brief
          *
@@ -103,7 +103,7 @@ namespace acme {
          * @brief
          *
          */
-        void acme::Robot::aruco_callback(const fiducial_msgs::\
+        void aruco_callback(const fiducial_msgs::\
         FiducialTransformArray::ConstPtr& m_msg);
 
         /**

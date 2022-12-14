@@ -1,9 +1,9 @@
 <launch>
-  <arg name="world_name" default="$(find final_project)/world/final_world.world" />
+  <arg name="world_name" default="$(find warehousebot_808xfp)/world/final_world.world" />
   <arg name="model" default="waffle" />
 
   <!-- Launch turtlebot3 bringup -->
-  <include file="$(find final_project)/launch/mapping/bringup.launch">
+  <include file="$(find warehousebot_808xfp)/launch/mapping/bringup.launch">
     <arg name="world_name" value="$(arg world_name)" />
     <arg name="model" value="$(arg model)" />
     <arg name="rviz_config" value="$(find final_project)/rviz/mapping.rviz" />

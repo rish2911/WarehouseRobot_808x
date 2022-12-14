@@ -112,7 +112,7 @@ namespace acme {
          * 
          * @param tfBuffer  
          */
-        void listen(const tf2_ros::Buffer& tfBuffer);
+        std::vector<double> listen(const tf2_ros::Buffer& tfBuffer);
 
      private:
         ros::NodeHandle robot_nh_;
@@ -130,6 +130,7 @@ namespace acme {
         robot_client_;  // move base client
         geometry_msgs::Twist robot_msgs_;
         bool saw_marker{false};  // Flag for marker spotting
+        std::vector<double> curr_pos_;
     };
 }  // namespace acme
 #endif  // INCLUDE_ROBOT_HPP_

@@ -34,8 +34,3 @@ jobs:
       - uses: ros-tooling/setup-ros@v0.3
         with:
           required-ros-distributions: noetic
-      - uses: ros-tooling/action-ros-ci@v0.2
-        with:
-          package-name: warehousebot_808xfp
-          target-ros1-distro: noetic
-          skip-tests: true

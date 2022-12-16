@@ -1,0 +1,157 @@
+\hypertarget{classacme_1_1_robot}{}\doxysection{acme\+::Robot Class Reference}
+\label{classacme_1_1_robot}\index{acme::Robot@{acme::Robot}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classacme_1_1_robot_ab4ad264441e513601a2fbf1518b53f9c}{Robot}} ()
+\begin{DoxyCompactList}\small\item\em Function for robot to move to goal. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classacme_1_1_robot_a60fa2b9dec4d99bae85430b5d3ed4808}\label{classacme_1_1_robot_a60fa2b9dec4d99bae85430b5d3ed4808}} 
+void {\bfseries move\+\_\+to\+\_\+goal} (std\+::vector$<$ double $>$ goal)
+\item 
+void \mbox{\hyperlink{classacme_1_1_robot_a1a542689c8f765086f7cf6cbeeb73031}{move\+\_\+to\+\_\+obj}} (std\+::vector$<$ double $>$ obj\+\_\+loc)
+\begin{DoxyCompactList}\small\item\em Function for robot to move to object. \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::vector$<$ double $>$ $>$ \mbox{\hyperlink{classacme_1_1_robot_ab90543c5e862e898868cfcf33a4a88c3}{get\+\_\+goals}} ()
+\begin{DoxyCompactList}\small\item\em Function to retrieve goals from R\+OS Parameter. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classacme_1_1_robot_a70b36c804ce146991516af89c19a2c55}{aruco\+\_\+callback}} (const fiducial\+\_\+msgs\+::\+Fiducial\+Transform\+Array\+::\+Const\+Ptr \&msg)
+\begin{DoxyCompactList}\small\item\em Aruco call back. \end{DoxyCompactList}\item 
+std\+::vector$<$ double $>$ \mbox{\hyperlink{classacme_1_1_robot_abe64ee050418416b024de5dd74956904}{listener}} (tf2\+\_\+ros\+::\+Buffer \&)
+\begin{DoxyCompactList}\small\item\em Function to retrieve frame transform. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classacme_1_1_robot_afd82a7c32e000cd5f1265c0d7139fd6a}{run}} (std\+::vector$<$ std\+::vector$<$ double $>$$>$)
+\begin{DoxyCompactList}\small\item\em Function to run robot. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classacme_1_1_robot_aafa96e27dce0eca76163a12debc3d90d}{rotate}} ()
+\begin{DoxyCompactList}\small\item\em Function to rotate robot. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classacme_1_1_robot_ad2454ac56435f3d226756897667e039c}{stop}} ()
+\begin{DoxyCompactList}\small\item\em Function to stop robot. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classacme_1_1_robot_a520afba084452514a170ab57bbd4235f}{set\+\_\+fiducial}} (bool)
+\begin{DoxyCompactList}\small\item\em Set the fiducial object. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classacme_1_1_robot_af6ea44d46c1e80f869f403510938fa1b}{check\+\_\+fiducial}} ()
+\begin{DoxyCompactList}\small\item\em Get fiducial value. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classacme_1_1_robot_ab4ad264441e513601a2fbf1518b53f9c}\label{classacme_1_1_robot_ab4ad264441e513601a2fbf1518b53f9c}} 
+\index{acme::Robot@{acme::Robot}!Robot@{Robot}}
+\index{Robot@{Robot}!acme::Robot@{acme::Robot}}
+\doxysubsubsection{\texorpdfstring{Robot()}{Robot()}}
+{\footnotesize\ttfamily acme\+::\+Robot\+::\+Robot (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Function for robot to move to goal. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em goal} & \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classacme_1_1_robot_a70b36c804ce146991516af89c19a2c55}\label{classacme_1_1_robot_a70b36c804ce146991516af89c19a2c55}} 
+\index{acme::Robot@{acme::Robot}!aruco\_callback@{aruco\_callback}}
+\index{aruco\_callback@{aruco\_callback}!acme::Robot@{acme::Robot}}
+\doxysubsubsection{\texorpdfstring{aruco\_callback()}{aruco\_callback()}}
+{\footnotesize\ttfamily void acme\+::\+Robot\+::aruco\+\_\+callback (\begin{DoxyParamCaption}\item[{const fiducial\+\_\+msgs\+::\+Fiducial\+Transform\+Array\+::\+Const\+Ptr \&}]{msg }\end{DoxyParamCaption})}
+
+
+
+Aruco call back. 
+
+\mbox{\Hypertarget{classacme_1_1_robot_af6ea44d46c1e80f869f403510938fa1b}\label{classacme_1_1_robot_af6ea44d46c1e80f869f403510938fa1b}} 
+\index{acme::Robot@{acme::Robot}!check\_fiducial@{check\_fiducial}}
+\index{check\_fiducial@{check\_fiducial}!acme::Robot@{acme::Robot}}
+\doxysubsubsection{\texorpdfstring{check\_fiducial()}{check\_fiducial()}}
+{\footnotesize\ttfamily bool acme\+::\+Robot\+::check\+\_\+fiducial (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Get fiducial value. 
+
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classacme_1_1_robot_ab90543c5e862e898868cfcf33a4a88c3}\label{classacme_1_1_robot_ab90543c5e862e898868cfcf33a4a88c3}} 
+\index{acme::Robot@{acme::Robot}!get\_goals@{get\_goals}}
+\index{get\_goals@{get\_goals}!acme::Robot@{acme::Robot}}
+\doxysubsubsection{\texorpdfstring{get\_goals()}{get\_goals()}}
+{\footnotesize\ttfamily std\+::vector$<$std\+::vector$<$double$>$ $>$ acme\+::\+Robot\+::get\+\_\+goals (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Function to retrieve goals from R\+OS Parameter. 
+
+\mbox{\Hypertarget{classacme_1_1_robot_abe64ee050418416b024de5dd74956904}\label{classacme_1_1_robot_abe64ee050418416b024de5dd74956904}} 
+\index{acme::Robot@{acme::Robot}!listener@{listener}}
+\index{listener@{listener}!acme::Robot@{acme::Robot}}
+\doxysubsubsection{\texorpdfstring{listener()}{listener()}}
+{\footnotesize\ttfamily std\+::vector$<$double$>$ acme\+::\+Robot\+::listener (\begin{DoxyParamCaption}\item[{tf2\+\_\+ros\+::\+Buffer \&}]{ }\end{DoxyParamCaption})}
+
+
+
+Function to retrieve frame transform. 
+
+\begin{DoxyReturn}{Returns}
+std\+::vector$<$double$>$ 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classacme_1_1_robot_a1a542689c8f765086f7cf6cbeeb73031}\label{classacme_1_1_robot_a1a542689c8f765086f7cf6cbeeb73031}} 
+\index{acme::Robot@{acme::Robot}!move\_to\_obj@{move\_to\_obj}}
+\index{move\_to\_obj@{move\_to\_obj}!acme::Robot@{acme::Robot}}
+\doxysubsubsection{\texorpdfstring{move\_to\_obj()}{move\_to\_obj()}}
+{\footnotesize\ttfamily void acme\+::\+Robot\+::move\+\_\+to\+\_\+obj (\begin{DoxyParamCaption}\item[{std\+::vector$<$ double $>$}]{obj\+\_\+loc }\end{DoxyParamCaption})}
+
+
+
+Function for robot to move to object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em obj\+\_\+loc} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classacme_1_1_robot_aafa96e27dce0eca76163a12debc3d90d}\label{classacme_1_1_robot_aafa96e27dce0eca76163a12debc3d90d}} 
+\index{acme::Robot@{acme::Robot}!rotate@{rotate}}
+\index{rotate@{rotate}!acme::Robot@{acme::Robot}}
+\doxysubsubsection{\texorpdfstring{rotate()}{rotate()}}
+{\footnotesize\ttfamily void acme\+::\+Robot\+::rotate (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Function to rotate robot. 
+
+\mbox{\Hypertarget{classacme_1_1_robot_afd82a7c32e000cd5f1265c0d7139fd6a}\label{classacme_1_1_robot_afd82a7c32e000cd5f1265c0d7139fd6a}} 
+\index{acme::Robot@{acme::Robot}!run@{run}}
+\index{run@{run}!acme::Robot@{acme::Robot}}
+\doxysubsubsection{\texorpdfstring{run()}{run()}}
+{\footnotesize\ttfamily void acme\+::\+Robot\+::run (\begin{DoxyParamCaption}\item[{std\+::vector$<$ std\+::vector$<$ double $>$$>$}]{ }\end{DoxyParamCaption})}
+
+
+
+Function to run robot. 
+
+\mbox{\Hypertarget{classacme_1_1_robot_a520afba084452514a170ab57bbd4235f}\label{classacme_1_1_robot_a520afba084452514a170ab57bbd4235f}} 
+\index{acme::Robot@{acme::Robot}!set\_fiducial@{set\_fiducial}}
+\index{set\_fiducial@{set\_fiducial}!acme::Robot@{acme::Robot}}
+\doxysubsubsection{\texorpdfstring{set\_fiducial()}{set\_fiducial()}}
+{\footnotesize\ttfamily void acme\+::\+Robot\+::set\+\_\+fiducial (\begin{DoxyParamCaption}\item[{bool}]{ }\end{DoxyParamCaption})}
+
+
+
+Set the fiducial object. 
+
+\mbox{\Hypertarget{classacme_1_1_robot_ad2454ac56435f3d226756897667e039c}\label{classacme_1_1_robot_ad2454ac56435f3d226756897667e039c}} 
+\index{acme::Robot@{acme::Robot}!stop@{stop}}
+\index{stop@{stop}!acme::Robot@{acme::Robot}}
+\doxysubsubsection{\texorpdfstring{stop()}{stop()}}
+{\footnotesize\ttfamily void acme\+::\+Robot\+::stop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Function to stop robot. 
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/\mbox{\hyperlink{robot_8hpp}{robot.\+hpp}}\end{DoxyCompactItemize}

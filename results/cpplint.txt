@@ -1,3 +1,4 @@
-Done processing ./include/robot.hpp
-Done processing ./src/robot.cpp
-Total errors found: 10
+cpplint $( find . -name \*.h -or -name \*.cpp | grep -vE -e "^./build/" -e "^./vendor/")
+Done processing ./main.cpp
+Done processing ./robot.cpp
+

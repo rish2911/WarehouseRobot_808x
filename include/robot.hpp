@@ -1,49 +1,48 @@
 
 /******************************************************************************
  * MIT License
- *
+ * 
  * Copyright (c) 2022 Adithya Singh, Rishabh Singh, Divyansh Agrawal
- *
+ * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
+ * 
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- *
+ * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * SOFTWARE. 
  ******************************************************************************/
 
 /**
  * @file robot.hpp
  * @author Divyansh Agrawal
- * @author Rishabh Singh
+ * @author Rishabh Singh 
  * @author Adithya Singh
  * @brief Class declaration for Robot
  * @version 0.1
  * @date 2022-12-13
- *
+ * 
  * @copyright Copyright (c) 2022
- *
+ * 
  */
 
 #ifndef INCLUDE_ROBOT_HPP_
 #define INCLUDE_ROBOT_HPP_
 #include <array>
 #include <vector>
-#include <string>
 #include <actionlib/client/simple_action_client.h>
 #include <fiducial_msgs/FiducialTransformArray.h>
-#include <geometry_msgs/Twist.h>
+#include <geometry_msgs/Twist.h> 
 #include <move_base_msgs/MoveBaseAction.h>
 #include <tf2/LinearMath/Quaternion.h>
 #include <tf2_ros/transform_broadcaster.h>
@@ -52,85 +51,129 @@
 #include <cstring>
 #include "std_msgs/String.h"
 #include "std_msgs/Int32.h"
+
+typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBaseClient;
 /**
- * @brief
- *
+ * @brief 
+ * 
  */
 namespace acme {
     /**
-     * @brief Class to represent a robot in an environment
-     *
+     * @brief 
+     * 
      */
     class Robot {
-     public:
-        /**
-         * @brief Default Constructor for Robot object
-         *
-         */
-        Robot() : robot_client_{"/explorer/move_base", true}, \
-        robot_name_{"explorer"}
-        {
-        }
-        /**
-         * @brief Construct a new Robot object
-         *
-         * @param name: std::string
-         */
-        Robot(std::string name) : robot_name_{name}, \
-        robot_client_{"/" + name + "/move_base", true} {
-        }
+        public:
+            /**
+             * @brief Function for robot to move to goal
+             * 
+             * @param goal 
+             */
+            Robot();
+            void move_to_goal(std::vector<double> goal);
+            /**
+             * @brief Function for robot to move to object
+             * 
+             * @param obj_loc 
+             */
+            void move_to_obj(std::vector<double> obj_loc);
+            /**
+             * @brief Function to retrieve goals from ROS Parameter
+             * 
+             */
+            std::vector<std::vector<double>> get_goals();
+            /**
+             * @brief Aruco call back
+             * 
+             */
+            void aruco_callback(const fiducial_msgs::FiducialTransformArray::ConstPtr& msg);
+            /**
+             * @brief Function to retrieve frame transform
+             * 
+             * @return std::vector<double> 
+             */
+            std::vector<double> listener(tf2_ros::Buffer&);
+            /**
+             * @brief Function to run robot
+             * 
+             */
+            void run(std::vector<std::vector<double>>);
+            /**
+             * @brief Function to rotate robot
+             * 
+             */
+            void rotate();
+            /**
+             * @brief Function to stop robot
+             * 
+             */
 
-        /**
-         * @brief Allows the robots to move to goal location. In case of the explorer,
-         * it also turns on spot and finds the aruco marker and broadcasts its
-         * location wrt global coordinates after transformation.
-         *
-         * @param goal: std::array<std::array<double, 2>, 5>
-         */
-        void move_to_goal(std::vector<std::vector<double>> goal_loc);
-        /**
-         * @brief
-         *
-         * @param obj_loc
-         */
-        void move_to_obj(std::vector<double> obj_loc);
-        /**
-         * @brief
-         *
-         */
-        std::vector<std::vector<double>> get_goals();
-        /**
-         * @brief
-         *
-         */
-        void aruco_callback(const fiducial_msgs::\
-        FiducialTransformArray::ConstPtr& m_msg);
+            void stop();
+            /**
+             * @brief Set the fiducial object
+             * 
+             */
+            void set_fiducial(bool);
+            /**
+             * @brief Get fiducial value
+             * 
+             * @return true 
+             * @return false 
+             */
+            bool check_fiducial();
 
-        /**
-         * @brief Listens to tf2_ros::Buffer and uses tf transform to get the coordinates of the markers in map frame.
-         * Used to get goal locations for follower robot.
-         * 
-         * @param tfBuffer  
-         */
-        std::vector<double> listen(const tf2_ros::Buffer& tfBuffer);
-
-     private:
-        ros::NodeHandle robot_nh_;
-        std::string robot_name_;  // robot name
-        int32_t m_aruco_id{};  // Index for aruco locations
-        std::vector<std::vector<double>> obj_locations_;
-        //
-        std::vector<double> final_obj_pos_;
-        //
-        double threshold_dist_;
-        //
-        move_base_msgs::MoveBaseGoal robot_goal_;
-        //
-        actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> \
-        robot_client_;  // move base client
-        geometry_msgs::Twist robot_msgs_;
-        bool saw_marker{false};  // Flag for marker spotting
-        std::vector<double> curr_pos_;
+        private:
+            /**
+             * @brief ROS node handler
+             * 
+             */
+            ros::NodeHandle robot_nh_;
+            /**
+             * @brief Container for all locatins
+             * 
+             */
+            std::vector<std::vector<double>> obj_locations_;
+            /**
+             * @brief Function to store curr position of robot
+             * 
+             */
+            std::vector<double> curr_pos_{-4.0, 2.5};
+            /**
+             * @brief Threshold for pickup distance
+             * 
+             */
+            double threshold_dist=0.5;
+            /**
+             * @brief Robot goal message
+             * 
+             */
+            move_base_msgs::MoveBaseGoal robot_goal_;
+            /**
+             * @brief ROS cmd_vel msg
+             * 
+             */
+            geometry_msgs::Twist robot_msgs_;
+            /**
+             * @brief ROS publisher for velocity
+             * 
+             */
+            ros::Publisher velocity_publisher;
+            /**
+             * @brief ROS Subscriber for fiducial
+             * 
+             */
+            ros::Subscriber fiducial_subscriber;
+            /**
+             * @brief Check fiducial status
+             * 
+             */
+            bool found_fiducial=false;
+            /**
+             * @brief ROS Action client
+             * 
+             */
+            actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> robot_client_{"/explorer/move_base", true};
+            
     };
-}  // namespace acme
+}
 #endif  // INCLUDE_ROBOT_HPP_

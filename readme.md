@@ -147,7 +147,7 @@ rosrun warehousebot_808xfp warehousebot_808xfp_node
 
 Following is the output on command line
 
-![](/run/user/1000/doc/18fc25af/cmd_line_output.png)
+![](results/cmd_line_output.png)
 
 ## Testing
 

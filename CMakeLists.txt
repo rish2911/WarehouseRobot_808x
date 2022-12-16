@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0.2)
 project(warehousebot_808xfp)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-# add_compile_options(-std=c++11)
+add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -200,12 +200,16 @@ target_link_libraries(${PROJECT_NAME}_node
 #############
 ## Testing ##
 #############
-
+if(CATKIN_ENABLE_TESTING)
+  find_package(rostest REQUIRED)
+  add_rostest_gtest(robot_test test/gtest.test test/test.cpp src/robot.cpp)
+  target_link_libraries(robot_test ${catkin_LIBRARIES} )
+  # add_dependencies(robot-test warehousebot_808xfp ${catkin_EXPORTED_TARGETS})
+endif()
 ## Add gtest based cpp test target and link libraries
 # catkin_add_gtest(${PROJECT_NAME}-test test/test_warehousebot_808xfp.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
-
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)

@@ -1,0 +1,5 @@
+<launch>
+
+<test test-name="robot_test" pkg="warehousebot_808xfp" type="robot_test"/>
+
+</launch>
